@@ -1,0 +1,144 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <style>
+        table, td, th {
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 70%;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+        input[type=text] {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=button] {
+            width: 20%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+
+    <meta charset="utf-8">
+
+    <title>Assignment</title>
+    <meta name="description" content="The HTML5 Herald">
+    <meta name="author" content="SitePoint">
+
+    <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<input type="text" id="url" placeholder="Enter URL ...">
+<input type="button"  onclick="CreateTableFromJSON()" value="Submit"></br>
+<div id="showData"></div>
+
+
+
+</body>
+<script>
+    function CreateTableFromJSON() {
+        var url=document.getElementById('url').value;
+        var jsonData = {
+            "htmlversion": "5",
+            "page title": "google.com",
+            "heading": {
+                "total": 12,
+                "h1": 13,
+                "h2": 13,
+                "h3": 13,
+                "h4": 13,
+                "h5": 13,
+                "h6": 13
+            },
+            "hypermedia links": {
+                "total count": 12,
+                "links": 6,
+                "media": 6,
+                "import": 6,
+                "internal": 6,
+                "external": 6
+            },
+            "login form": false
+        }
+
+
+         // CREATE COLUMNS
+        var col = ['Attribute','Analysis'];
+        Object.keys(jsonData).forEach(function(key) {
+
+        });
+        // CREATE DYNAMIC TABLE.
+        var table = document.createElement("table");
+
+        // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+        var tr = table.insertRow(-1);                   // TABLE ROW.
+
+        for (var i = 0; i < col.length; i++) {
+            var th = document.createElement("th");      // TABLE HEADER.
+            th.innerHTML = col[i];
+            tr.appendChild(th);
+        }
+
+        // ADD JSON DATA TO THE TABLE AS ROWS.
+        Object.keys(jsonData).forEach(function(key) {
+            tr = table.insertRow(-1);
+            var tabCell1 = tr.insertCell(-1);
+            tabCell1.innerHTML = key;
+            var tabCell2 = tr.insertCell(-1);
+
+            console.log(tabCell2)
+            if(typeof jsonData[key]!='object')
+                tabCell2.innerHTML = jsonData[key];
+            else{
+
+                var innerTable = document.createElement("table");
+                Object.keys(jsonData[key]).forEach(function(innerKey) {
+
+                    var tr1 = innerTable.insertRow(-1);                   // TABLE ROW.
+                    var tabCell1_new = tr1.insertCell(-1);
+                    tabCell1_new.innerHTML = innerKey;
+                    var tabCell2_new = tr1.insertCell(-1);
+                    tabCell2_new.innerHTML = jsonData[key][innerKey];
+
+                });
+                tabCell2.appendChild(innerTable)
+            }
+
+        });
+
+
+
+        // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        var divContainer = document.getElementById("showData");
+        divContainer.innerHTML = "";
+        divContainer.appendChild(table);
+    }
+
+</script>
+</html>
